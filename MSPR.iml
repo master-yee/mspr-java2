@@ -10,14 +10,14 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://E:/Development/opencv/build/java/opencv-400.jar!/" />
+          <root url="jar://$MODULE_DIR$/librairies/opencv/build/java/opencv-400.jar!/" />
         </CLASSES>
         <JAVADOC />
         <NATIVE>
-          <root url="file://E:/Development/opencv/build/java/x64" />
+          <root url="file://$MODULE_DIR$/librairies/opencv/build/java/x64" />
         </NATIVE>
         <SOURCES>
-          <root url="jar://E:/Development/opencv/build/java/opencv-400.jar!/" />
+          <root url="jar://$MODULE_DIR$/librairies/opencv/build/java/opencv-400.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
