@@ -1,6 +1,8 @@
 package sample;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -23,6 +25,7 @@ import javafx.scene.layout.Pane;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 import org.opencv.videoio.VideoCapture;
 
@@ -38,11 +41,15 @@ public class Controller {
     @FXML
     private Button cameraButton;
 
-
+   // DaemonThread
     private Pane rootElement;
     private Timer timer;
     private VideoCapture capture = new VideoCapture();
     private int absoluteFaceSize = 0;
+    private BufferedImage trainingImage= ImageIO.read(new File(Controller.class.getResource("william.jpg").getFile()));
+
+    public Controller() throws IOException {
+    }
 
     @FXML
     void startCamera(ActionEvent event) {
@@ -86,6 +93,8 @@ public class Controller {
         //init
         Image imageToShow = null;
         Mat frame = new Mat();
+        CascadeClassifier faceDetector= new CascadeClassifier(Controller.class.getResource("lbpcascade_frontalface.xml").getPath().substring(1));
+        MatOfRect faceDetections = new MatOfRect();
         // check if the capture is open
         if (this.capture.isOpened()) {
             try {
@@ -94,7 +103,11 @@ public class Controller {
                 // if the frame is not empty, process it
                 if (!frame.empty()) {
                     // convert the image to gray scale
-                    Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+                    faceDetector.detectMultiScale(frame,faceDetections);
+                    for (Rect rect:faceDetections.toArray()){
+                        Imgproc.rectangle(frame,new Point(rect.x,rect.y),new Point(rect.x +rect.width,rect.y+rect.height),new Scalar(0,255,0));
+                    }
+                    //Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
                     //Imgproc.equalizeHist(grayFrame, grayFrame);
                     //Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
                     // convert the Mat object (OpenCV) to Image(JavaFX)
